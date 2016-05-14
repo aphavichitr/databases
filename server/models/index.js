@@ -29,22 +29,25 @@ db = db.connection();
 module.exports = {
   messages: {
     get: function (cb) {
-      db.query("SELECT * FROM messages", function(err, result) {
+      db.query("select messages.message, usernames.username, rooms.roomname from messages join usernames on messages.id_usernames = usernames.id join rooms on messages.id_rooms=rooms.id", function(err, result) {
         if (err) {
           console.log('Error Messages Get -------------------------->', err);
         } else {
+          console.log('FETCH MSG RESULTS', result);
+          var result = {results: result};
           cb(result);
         }
       });
     }, // a function which produces all the messages
     post: function (body, respond) {
-      var message = body.message;
+      var message = body.text;
+      console.log('This is the body!!!', body);
       var room = body.roomname;
       var username = body.username;
-      var selectUser = "SELECT id FROM usernames WHERE name ='" + username + "'";
-      var selectRoom = "SELECT id FROM rooms WHERE name ='" + room + "'";
-      var insertUser = "INSERT INTO usernames (name) VALUES ('" + username + "')";
-      var insertRoom = "INSERT INTO rooms (name) VALUES ('" + room + "')";
+      var selectUser = "SELECT id FROM usernames WHERE username ='" + username + "'";
+      var selectRoom = "SELECT id FROM rooms WHERE roomname ='" + room + "'";
+      var insertUser = "INSERT INTO usernames (username) VALUES ('" + username + "')";
+      var insertRoom = "INSERT INTO rooms (roomname) VALUES ('" + room + "')";
 
      
 
@@ -63,7 +66,7 @@ module.exports = {
       };
 
       var insertMessage = function() {
-        write('INSERT INTO messages (text, id_usernames, id_rooms) VALUES ("' + message + '", (SELECT id FROM usernames WHERE name ="' + username + '"), (SELECT id from rooms WHERE name ="' + room + '"))')
+        write('INSERT INTO messages (message, id_usernames, id_rooms) VALUES ("' + message + '", (SELECT id FROM usernames WHERE username ="' + username + '"), (SELECT id from rooms WHERE roomname ="' + room + '"))')
           .then(respond);
       };
 
@@ -146,6 +149,7 @@ module.exports = {
   users: {
     // Ditto as above.
     get: function () {},
+
     post: function () {}
   }
 };

@@ -3,7 +3,7 @@ var app = {
 
   //TODO: The current 'toggleFriend' function just toggles the class 'friend'
   //to all messages sent by the user
-  server: 'http://127.0.0.1:3000/classes/users',
+  server: 'http://127.0.0.1:3000/classes/messages',
   username: 'anonymous',
   roomname: 'lobby',
   lastMessageId: 0,
@@ -60,7 +60,9 @@ var app = {
       contentType: 'application/json',
       success: function(data) {
         // Don't bother if we have nothing to work with
+        data = JSON.parse(data);
         if (!data.results || !data.results.length) { return; }
+        console.log(data.results);
         
         // Get the last message
         var mostRecentMessage = data.results[data.results.length - 1];
@@ -149,6 +151,7 @@ var app = {
       // Add in the message data using DOM methods to avoid XSS
       // Store the username in the element's data
       var $username = $('<span class="username"/>');
+      console.log('Data ===================> ', data, $username);
       $username.text(data.username + ': ').attr('data-username', data.username).attr('data-roomname', data.roomname).appendTo($chat);
 
       // Add the friend class
@@ -157,7 +160,7 @@ var app = {
       }
 
       var $message = $('<br><span/>');
-      $message.text(data.text).appendTo($chat);
+      $message.text(data.message).appendTo($chat);
 
       // Add the message to the UI
       app.$chats.append($chat);
@@ -209,7 +212,7 @@ var app = {
 
   handleSubmit: function(evt) {
     var message = {
-      username: app.username,
+      username: app.username || 'Anonymous',
       text: app.$message.val(),
       roomname: app.roomname || 'lobby'
     };

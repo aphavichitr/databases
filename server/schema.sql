@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `Messages`;
 		
 CREATE TABLE `Messages` (
   `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Text` VARCHAR(250),
+  `message` VARCHAR(250),
   `id_Usernames` INTEGER UNSIGNED NOT NULL,
   `id_Rooms` INTEGER UNSIGNED NOT NULL
 );
@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `Usernames`;
 		
 CREATE TABLE `Usernames` (
   `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Name` VARCHAR(25) DEFAULT 'Anonymous'
+  `username` VARCHAR(25) DEFAULT 'Anonymous'
 );
 
 -- ---
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `Rooms`;
 		
 CREATE TABLE `Rooms` (
   `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Name` VARCHAR(20) DEFAULT 'Lobby'
+  `roomname` VARCHAR(20) DEFAULT 'Lobby'
 );
 
 -- ---
