@@ -24,25 +24,18 @@ var Rooms = db.define('Rooms', {
   'roomname': Sequelize.STRING(25)
 });
 
+Message.belongsTo(User);
+Message.belongsTo(Rooms);
+
+User.hasMany(Message);
+Rooms.hasMany(Message);
+
 /* Sequelize comes with built in support for promises
  * making it easy to chain asynchronous operations together */
-User.sync()
-  .then(function() {
-    // Now instantiate an object and save it:
-    return User.create({username: 'Jean Valjean'});
-  })
-  .then(function() {
-    // Retrieve objects from the database:
-    return User.findAll({ where: {username: 'Jean Valjean'} });
-  })
-  .then(function(users) {
-    users.forEach(function(user) {
-      console.log(user.username + ' exists');
-    });
-    db.close();
-  })
-  .catch(function(err) {
-    // Handle any error in the chain
-    console.error(err);
-    db.close();
-  });
+User.sync();
+Message.sync();
+Rooms.sync();
+
+exports.User = User;
+exports.Message = Message;
+exports.Rooms = Rooms;

@@ -1,7 +1,7 @@
 var db = require('../db');
 var _ = require('underscore');
 var Promise = require('bluebird');
-db = db.connection();
+// db = db.connection();
 // var connection = function() {
 //   db.connection.connect(function(err) {
 //     if (err) {
@@ -69,11 +69,6 @@ module.exports = {
         write('INSERT INTO messages (message, id_usernames, id_rooms) VALUES ("' + message + '", (SELECT id FROM usernames WHERE username ="' + username + '"), (SELECT id from rooms WHERE roomname ="' + room + '"))')
           .then(respond);
       };
-
-      
-
-
-
       //Checks for existing username, returns username or empty string if it does not exist
       write(selectUser)
         .then((user) => {
